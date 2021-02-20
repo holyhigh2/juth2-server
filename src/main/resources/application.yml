@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: Juth2-Server
+    version: 0.1.0
+
+server:
+  servlet:
+    context-path: /
+  tomcat:
+    uri-encoding: utf-8
+  error:
+    include-message: always
+    include-binding-errors: always
+  port: 8081
+
+juth2:
+  token:
+    access-expire-time-in-sec: 1900
+    refresh-expire-time-in-sec: 2100
+  security:
+    cookieEnabled: false
+  allowed:
+    methods: head

@@ -1,0 +1,8 @@
+juth2:
+  token:
+    access-expire-time-in-sec: 1900
+    refresh-expire-time-in-sec: 2100
+  allowed:
+    headers: sskey
+  security:
+    scope-enabled: false
