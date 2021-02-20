@@ -19,7 +19,7 @@ import java.util.*;
 /**
  * 提供辅助函数
  *
- * @author holyhigh https://gitee.com/holyhigh2
+ * @author holyhigh https://github.com/holyhigh2
  */
 public abstract class Juth2Helper {
     //jwt不同请求类型的sub值

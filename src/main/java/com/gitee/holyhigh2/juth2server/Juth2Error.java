@@ -4,7 +4,7 @@ package com.gitee.holyhigh2.juth2server;
  * 读Juth2错误进行分类，并封装错误信息。
  * 返回友好的错误信息到网页/ajax/接口等
  *
- * @author holyhigh https://gitee.com/holyhigh2
+ * @author holyhigh https://github.com/holyhigh2
  */
 public class Juth2Error {
     public enum Types {

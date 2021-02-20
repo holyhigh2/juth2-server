@@ -15,7 +15,7 @@ import java.util.Date;
  * Juth2安全主体，标识了当前访问用户的
  * Juth2会维护一个主体列表，用于处理鉴权和在线用户管理
  *
- * @author holyhigh https://gitee.com/holyhigh2
+ * @author holyhigh https://github.com/holyhigh2
  */
 public class Juth2PrincipalProvider implements Juth2Principal {
     private static final long serialVersionUID = 7209776491450668945L;

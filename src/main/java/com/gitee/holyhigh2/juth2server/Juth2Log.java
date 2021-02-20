@@ -7,7 +7,7 @@ import org.apache.juli.logging.LogFactory;
 /**
  * 提供日志
  *
- * @author holyhigh https://gitee.com/holyhigh2
+ * @author holyhigh https://github.com/holyhigh2
  */
 public abstract class Juth2Log {
 

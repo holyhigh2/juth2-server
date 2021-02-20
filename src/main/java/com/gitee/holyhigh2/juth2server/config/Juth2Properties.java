@@ -18,7 +18,7 @@ import java.util.*;
  * 基于SpringBoot的默认顺序，如果application属性文件中出现了juth2配置项则会优先使用。
  * 其次使用外部属性文件 juth2.yml/yml
  *
- * @author holyhigh https://gitee.com/holyhigh2
+ * @author holyhigh https://github.com/holyhigh2
  */
 @Data
 @Component

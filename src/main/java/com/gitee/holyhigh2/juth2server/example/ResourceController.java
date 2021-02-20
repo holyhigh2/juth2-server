@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
  * 【样例】
  * 资源控制器
  *
- * @author holyhigh https://gitee.com/holyhigh2
+ * @author holyhigh https://github.com/holyhigh2
  */
 @RestController
 @RequestMapping(path = "/r")

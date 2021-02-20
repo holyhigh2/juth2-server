@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * 鉴权信息
  *
- * @author holyhigh https://gitee.com/holyhigh2
+ * @author holyhigh https://github.com/holyhigh2
  */
 @Data
 public class Juth2Authentication implements Serializable {

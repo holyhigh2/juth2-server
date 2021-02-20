@@ -18,7 +18,7 @@ import java.util.Map;
  * 管理授权客户
  * 对鉴权数据进行缓存
  *
- * @author holyhigh https://gitee.com/holyhigh2
+ * @author holyhigh https://github.com/holyhigh2
  */
 @Service
 public class Juth2ServiceImpl implements Juth2Service {

@@ -12,7 +12,7 @@ import java.util.Properties;
 /**
  * yml解析器
  *
- * @author holyhigh https://gitee.com/holyhigh2
+ * @author holyhigh https://github.com/holyhigh2
  */
 public class YamlPropertySourceFactory implements PropertySourceFactory {
     @Override

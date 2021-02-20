@@ -11,7 +11,7 @@ import java.util.Date;
  * 表示一个Juth2的访问主体，会在授权通过后被保存在主体列表中
  * 访问主体包括请求头信息、鉴权请求信息、鉴权后的token信息、业务关联信息
  *
- * @author holyhigh https://gitee.com/holyhigh2
+ * @author holyhigh https://github.com/holyhigh2
  */
 public interface Juth2Principal extends Serializable {
     /**

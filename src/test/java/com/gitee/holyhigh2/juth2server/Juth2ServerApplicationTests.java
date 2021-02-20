@@ -34,7 +34,6 @@ class Juth2ServerApplicationTests {
 				.request(HttpMethod.POST,"/a/b")
 		)
 				.andExpect(MockMvcResultMatchers.status().isBadRequest())
-//				.andExpect(MockMvcResultMatchers.status().reason( "No Authorization header was found"))
 				.andDo(MockMvcResultHandlers.print());
 	}
 }

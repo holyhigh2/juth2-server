@@ -11,7 +11,7 @@ import java.io.IOException;
 /**
  * 拦截response回写接口，用于记录日志
  *
- * @author holyhigh https://gitee.com/holyhigh2
+ * @author holyhigh https://github.com/holyhigh2
  */
 class Juth2ResponseWrapper extends HttpServletResponseWrapper {
     private String uri;

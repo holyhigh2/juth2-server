@@ -25,7 +25,7 @@ import java.util.*;
  * 3. scope检测
  * 4. request封装
  *
- * @author holyhigh https://gitee.com/holyhigh2
+ * @author holyhigh https://github.com/holyhigh2
  */
 @Order(Juth2Properties.FILTER_START_NUMBER + 2)
 @Component

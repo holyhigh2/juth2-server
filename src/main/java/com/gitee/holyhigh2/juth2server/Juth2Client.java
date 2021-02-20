@@ -7,7 +7,7 @@ import java.io.Serializable;
 /**
  * 鉴权客户
  *
- * @author holyhigh https://gitee.com/holyhigh2
+ * @author holyhigh https://github.com/holyhigh2
  */
 @Data
 public class Juth2Client implements Serializable {

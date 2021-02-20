@@ -12,7 +12,7 @@ import java.util.Map;
  * 鉴权服务，提供用于整个鉴权过程的各种操作
  * 对于数据操作方法根据应用场景和部署方式实现
  *
- * @author holyhigh https://gitee.com/holyhigh2
+ * @author holyhigh https://github.com/holyhigh2
  */
 public interface Juth2Service {
 

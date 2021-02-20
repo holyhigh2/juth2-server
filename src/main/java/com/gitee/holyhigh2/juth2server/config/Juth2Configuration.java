@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 /**
  * Juth2 配置入口，负责初始化配置文件及 FilterLevel1
  *
- * @author holyhigh https://gitee.com/holyhigh2
+ * @author holyhigh https://github.com/holyhigh2
  */
 @Configuration
 public class Juth2Configuration {

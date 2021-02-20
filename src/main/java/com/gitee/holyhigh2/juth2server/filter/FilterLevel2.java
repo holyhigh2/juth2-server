@@ -39,7 +39,7 @@ import java.util.Optional;
  * 过滤协议包括授权及资源请求；区分跨域/同域
  * 但都需要通过authorization请求头
  *
- * @author holyhigh https://gitee.com/holyhigh2
+ * @author holyhigh https://github.com/holyhigh2
  */
 @Order(Juth2Properties.FILTER_START_NUMBER + 1)
 @Component

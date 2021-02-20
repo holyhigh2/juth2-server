@@ -17,7 +17,7 @@ import java.util.Map;
  * 【样例】
  * 鉴权逻辑控制器
  *
- * @author holyhigh https://gitee.com/holyhigh2
+ * @author holyhigh https://github.com/holyhigh2
  */
 @RestController
 @RequestMapping(path = "/juth2")

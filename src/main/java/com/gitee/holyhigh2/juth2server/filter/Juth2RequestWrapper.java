@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequestWrapper;
 /**
  * 在level2鉴权通过后，增加获取client/principal的代理方法
  *
- * @author holyhigh https://gitee.com/holyhigh2
+ * @author holyhigh https://github.com/holyhigh2
  */
 class Juth2RequestWrapper extends HttpServletRequestWrapper implements Juth2Request {
     private Juth2Client client;
