@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.github.holyhigh2.juth2server.config.Juth2Configuration
