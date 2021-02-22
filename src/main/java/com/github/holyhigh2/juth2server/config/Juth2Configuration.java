@@ -1,12 +1,11 @@
 package com.github.holyhigh2.juth2server.config;
 
-import com.github.holyhigh2.juth2server.Juth2Client;
-import com.github.holyhigh2.juth2server.Juth2DataAccessException;
 import com.github.holyhigh2.juth2server.Juth2Log;
 import com.github.holyhigh2.juth2server.Juth2Service;
 import com.github.holyhigh2.juth2server.filter.FilterLevel2;
 import com.github.holyhigh2.juth2server.filter.FilterLevel3;
 import org.springframework.boot.ResourceBanner;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -18,7 +17,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 /**
@@ -27,18 +25,22 @@ import java.util.stream.Collectors;
  * @author holyhigh https://github.com/holyhigh2
  */
 @Configuration
+@ConditionalOnClass(Juth2Service.class)
 @EnableConfigurationProperties({Juth2Properties.class})
 public class Juth2Configuration {
-    private Juth2Service juth2Service;
     private Juth2Properties juth2Properties;
 
-    Juth2Configuration(Juth2Service juth2Service, Juth2Properties juth2Properties, Environment environment){
+    public Juth2Configuration(Juth2Properties juth2Properties, Environment environment){
         //banner
-        String version = Juth2Service.class.getPackage().getImplementationVersion();
+        String version = this.getClass().getPackage().getImplementationVersion();
         ResourceBanner banner = new ResourceBanner(new ClassPathResource("/juth2-logo.txt"));
         banner.printBanner(environment,Juth2Configuration.class,System.out);
+        String spaces = "";
+        for(int i=0;i<61;i++){
+            spaces += " ";
+        }
+        System.out.println(spaces+version);
 
-        this.juth2Service = juth2Service;
         this.juth2Properties = juth2Properties;
 
         Juth2Properties.log();
@@ -54,20 +56,13 @@ public class Juth2Configuration {
     public CorsFilter corsFilter() {
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         final CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(true);
-
-        List<String> origins = null;
-        if (Juth2Properties.SECURITY_ORIGIN_ENABLED) {
-            try {
-                origins = juth2Service.getAllClients().values().stream().map(Juth2Client::getClientAddress).collect(Collectors.toList());
-            } catch (Juth2DataAccessException e) {
-                Juth2Log.error("getAllClients in level1",e);
-            }
-            config.setAllowedOrigins(origins);
-        } else {
-            origins = List.of("*");
-            config.setAllowedOriginPatterns(origins);
+        if(Juth2Properties.SECURITY_COOKIE_ENABLED){
+            config.setAllowCredentials(true);
         }
+
+        List<String> origins = List.of("*");
+        config.setAllowedOriginPatterns(origins);
+
         //log日志，显示配置项
         List<String> headers = Juth2Properties.ALLOWED_HEADERS;
         List<String> methods = Juth2Properties.ALLOWED_METHODS;
@@ -75,15 +70,15 @@ public class Juth2Configuration {
         config.setAllowedMethods(methods);
         source.registerCorsConfiguration("/**", config);
 
-        String initInfo = String.format("Initializing CORS with \n\nOrigins:%s,\nHeaders:%s,\nMethods:%s,\nUrlPatterns:/*\n",
-                origins, headers, methods
+        String initInfo = String.format("Initializing CORS with \nHeaders:%s,\nMethods:%s,\nUrlPatterns:/*\n",
+                headers, methods
         );
         Juth2Log.info(initInfo);
         return new CorsFilter(source);
     }
 
     @Bean
-    public FilterRegistrationBean<CorsFilter> loadFilterLevel1() {
+    public FilterRegistrationBean<CorsFilter> loadFilterLevel1(Juth2Service juth2Service) {
         final FilterRegistrationBean<CorsFilter> reg = new FilterRegistrationBean<>();
         reg.setFilter(corsFilter());
         reg.addUrlPatterns("/*");

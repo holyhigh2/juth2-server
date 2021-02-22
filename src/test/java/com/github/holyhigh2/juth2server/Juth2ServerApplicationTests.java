@@ -21,10 +21,10 @@ class Juth2ServerApplicationTests {
 	@Test
 	void authorizeWithoutHeaders() throws Exception {
 		mvc.perform(MockMvcRequestBuilders
-				.request(HttpMethod.POST,"/juth2-demo/authorize")
+				.request(HttpMethod.POST,"/juth2/authorize")
 				)
-				.andExpect(MockMvcResultMatchers.status().isBadRequest())
-				.andExpect(MockMvcResultMatchers.status().reason(containsString("No Authorization header was found")))
+				.andExpect(MockMvcResultMatchers.status().isForbidden())
+				.andExpect(MockMvcResultMatchers.status().reason(containsString("Invalid CORS request")))
 				.andDo(MockMvcResultHandlers.print());
 	}
 
@@ -33,7 +33,7 @@ class Juth2ServerApplicationTests {
 		mvc.perform(MockMvcRequestBuilders
 				.request(HttpMethod.POST,"/a/b")
 		)
-				.andExpect(MockMvcResultMatchers.status().isBadRequest())
+				.andExpect(MockMvcResultMatchers.status().isForbidden())
 				.andDo(MockMvcResultHandlers.print());
 	}
 }

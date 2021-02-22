@@ -10,6 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
  */
 @EnableAutoConfiguration
 @SpringBootApplication
+@ComponentScan("com.github.holyhigh2.juth2server.example")
 public class Juth2ServerApplication {
 
 	public static void main(String[] args) {

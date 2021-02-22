@@ -13,7 +13,6 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.RegExUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.servlet.*;
 import javax.servlet.http.Cookie;
@@ -24,10 +23,13 @@ import java.security.KeyFactory;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * 进行oauth2 level2 的权限过滤，包括
+ * 0. 过滤origins
  * 1. jwt有效性
  * 2. 符合juth2规范
  * <p>
@@ -43,18 +45,46 @@ public class FilterLevel2 implements Filter {
     Juth2Service juth2Service;
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-        juth2Service = WebApplicationContextUtils.
-                getRequiredWebApplicationContext(filterConfig.getServletContext()).
-                getBean(Juth2Service.class);
-    }
-
-    @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         response.setHeader("Content-Type", "application/json;charset=UTF-8");//统一返回json格式
         HttpServletRequest request = (HttpServletRequest) servletRequest;
-        String requestMethod = request.getMethod();
+
+        if(juth2Service == null){
+            juth2Service = Juth2Properties.getBean(Juth2Service.class);
+        }
+
+        //wrap response
+        Juth2ResponseWrapper responseWrapper = new Juth2ResponseWrapper(response, request);
+
+        //动态 origins 验证
+        if (Juth2Properties.SECURITY_ORIGIN_ENABLED) {
+            List<String> origins = null;
+            try {
+                origins = juth2Service.getAllClients().values().stream().map(Juth2Client::getClientAddress).collect(Collectors.toList());
+            } catch (Juth2DataAccessException e) {
+                Juth2Log.error("getAllClients in level2",e);
+            }
+            String requestOrigin = request.getHeader("Origin");
+            if(requestOrigin != null && requestOrigin.length()>0){
+                boolean isMatch = false;
+                for (String allowedOrigin : origins) {
+                    if (requestOrigin.equalsIgnoreCase(allowedOrigin)) {
+                        isMatch = true;
+                        break;
+                    }
+                }
+                if(!isMatch)requestOrigin = null;
+            }
+            if(requestOrigin == null){
+                Juth2Log.warning("Reject: '" + requestOrigin + "' origin is not allowed");
+                responseWrapper.sendError(HttpStatus.FORBIDDEN.value(), Juth2Error.getErrorMessage(Juth2Error.Types.Auth, "Invalid CORS request"));
+                return;
+            }
+
+            response.setHeader("Access-Control-Allow-Origin",requestOrigin);
+        }
+
         String authorization = request.getHeader("authorization");
         if (StringUtils.isEmpty(authorization) && Juth2Properties.SECURITY_COOKIE_ENABLED && request.getCookies() != null) {
             Optional<Cookie> v = Arrays.stream(request.getCookies()).filter(c -> "Juth2-Auth" .equals(c.getName())).findFirst();
@@ -62,8 +92,7 @@ public class FilterLevel2 implements Filter {
                 authorization = "Bearer " + v.get().getValue();
             }
         }
-        //wrap response
-        Juth2ResponseWrapper responseWrapper = new Juth2ResponseWrapper(response, request);
+
         if (StringUtils.isEmpty(authorization)) {
             responseWrapper.sendError(HttpStatus.BAD_REQUEST.value(), Juth2Error.getErrorMessage(Juth2Error.Types.Token, "No Authorization header was found"));
             return;

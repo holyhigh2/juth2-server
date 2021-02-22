@@ -9,7 +9,6 @@ import com.github.holyhigh2.juth2server.principal.Juth2PrincipalProvider;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.AntPathMatcher;
-import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -30,16 +29,13 @@ public class FilterLevel3 implements Filter {
     final static AntPathMatcher urlMatcher = new AntPathMatcher();
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-        juth2Service = WebApplicationContextUtils.
-                getRequiredWebApplicationContext(filterConfig.getServletContext()).
-                getBean(Juth2Service.class);
-    }
-
-    @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         Juth2ResponseWrapper response = (Juth2ResponseWrapper) servletResponse;
         HttpServletRequest request = (HttpServletRequest) servletRequest;
+
+        if(juth2Service == null){
+            juth2Service = Juth2Properties.getBean(Juth2Service.class);
+        }
 
         //noinspection unchecked
         Map<String, Claim> claimMap = (Map<String, Claim>) request.getAttribute("Juth2.jwt.claims");

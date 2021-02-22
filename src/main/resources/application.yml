@@ -1,6 +1,5 @@
 application:
   name: Juth2-Server
-  version: 0.1.0
 
 server:
   servlet:
