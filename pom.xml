@@ -5,7 +5,7 @@
 
     <groupId>com.github.holyhigh2</groupId>
     <artifactId>juth2-server</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
+    <version>0.1.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>juth2-server</name>
