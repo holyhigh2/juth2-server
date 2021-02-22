@@ -21,7 +21,7 @@ class Juth2ServerApplicationTests {
 	@Test
 	void authorizeWithoutHeaders() throws Exception {
 		mvc.perform(MockMvcRequestBuilders
-				.request(HttpMethod.POST,"/juth2/authorize")
+				.request(HttpMethod.POST,"/juth2-demo/authorize")
 				)
 				.andExpect(MockMvcResultMatchers.status().isBadRequest())
 				.andExpect(MockMvcResultMatchers.status().reason(containsString("No Authorization header was found")))
