@@ -1,11 +1,9 @@
 package com.github.holyhigh2.juth2server.config;
 
 import com.github.holyhigh2.juth2server.Juth2Log;
-import com.github.holyhigh2.juth2server.Juth2Service;
 import com.github.holyhigh2.juth2server.filter.FilterLevel2;
 import com.github.holyhigh2.juth2server.filter.FilterLevel3;
 import org.springframework.boot.ResourceBanner;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -25,25 +23,17 @@ import java.util.List;
  * @author holyhigh https://github.com/holyhigh2
  */
 @Configuration
-@ConditionalOnClass(Juth2Service.class)
 @EnableConfigurationProperties({Juth2Properties.class})
 public class Juth2Configuration {
-    private Juth2Properties juth2Properties;
 
     public Juth2Configuration(Juth2Properties juth2Properties, Environment environment){
         //banner
         String version = this.getClass().getPackage().getImplementationVersion();
         ResourceBanner banner = new ResourceBanner(new ClassPathResource("/juth2-logo.txt"));
         banner.printBanner(environment,Juth2Configuration.class,System.out);
-        String spaces = "";
-        for(int i=0;i<61;i++){
-            spaces += " ";
-        }
-        System.out.println(spaces+version);
+        System.out.println(" ".repeat(61) +version);
 
-        this.juth2Properties = juth2Properties;
-
-        Juth2Properties.log();
+        juth2Properties.log();
     }
 
     /**
@@ -78,7 +68,7 @@ public class Juth2Configuration {
     }
 
     @Bean
-    public FilterRegistrationBean<CorsFilter> loadFilterLevel1(Juth2Service juth2Service) {
+    public FilterRegistrationBean<CorsFilter> loadFilterLevel1() {
         final FilterRegistrationBean<CorsFilter> reg = new FilterRegistrationBean<>();
         reg.setFilter(corsFilter());
         reg.addUrlPatterns("/*");

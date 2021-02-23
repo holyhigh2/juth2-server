@@ -20,7 +20,6 @@ import java.util.*;
  * @author holyhigh https://github.com/holyhigh2
  */
 @Data
-//@Component
 @ConfigurationProperties(prefix = "juth2",ignoreInvalidFields = true)
 @PropertySources({
         @PropertySource(value = {"classpath:juth2.yml", "classpath:config/juth2.yml"}, factory = YamlPropertySourceFactory.class,ignoreResourceNotFound = true, encoding = "UTF-8"),
@@ -50,7 +49,7 @@ public class Juth2Properties implements ApplicationContextAware {
     public static String SIGN_OUT_SERVICE_NAME = "sign-out";
     public static String REFRESH_TOKEN_GRANT_TYPE = "refresh_token";
 
-    static void log(){
+    public void log(){
         Map<String, Object> info = Map.of(
                 "juth2.token.access-expire-time-in-sec", TOKEN_ACCESS_EXPIRE_TIME_IN_SEC,
                 "juth2.token.refresh-expire-time-in-sec", TOKEN_REFRESH_EXPIRE_TIME_IN_SEC,
