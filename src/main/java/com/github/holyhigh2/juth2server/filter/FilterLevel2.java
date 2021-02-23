@@ -13,6 +13,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.RegExUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.cors.CorsUtils;
 
 import javax.servlet.*;
 import javax.servlet.http.Cookie;
@@ -58,7 +59,8 @@ public class FilterLevel2 implements Filter {
         Juth2ResponseWrapper responseWrapper = new Juth2ResponseWrapper(response, request);
 
         //动态 origins 验证
-        if (Juth2Properties.SECURITY_ORIGIN_ENABLED) {
+        boolean isCorsRequest = CorsUtils.isCorsRequest(request);
+        if (isCorsRequest && Juth2Properties.SECURITY_ORIGIN_ENABLED) {
             List<String> origins = null;
             try {
                 origins = juth2Service.getAllClients().values().stream().map(Juth2Client::getClientAddress).collect(Collectors.toList());
