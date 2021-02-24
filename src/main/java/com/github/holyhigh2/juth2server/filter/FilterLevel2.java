@@ -68,17 +68,16 @@ public class FilterLevel2 implements Filter {
                 Juth2Log.error("getAllClients in level2",e);
             }
             String requestOrigin = request.getHeader("Origin");
+            boolean isMatch = false;
             if(requestOrigin != null && requestOrigin.length()>0){
-                boolean isMatch = false;
                 for (String allowedOrigin : origins) {
                     if (requestOrigin.equalsIgnoreCase(allowedOrigin)) {
                         isMatch = true;
                         break;
                     }
                 }
-                if(!isMatch)requestOrigin = null;
             }
-            if(requestOrigin == null){
+            if(!isMatch){
                 Juth2Log.warning("Reject: '" + requestOrigin + "' origin is not allowed");
                 responseWrapper.sendError(HttpStatus.FORBIDDEN.value(), Juth2Error.getErrorMessage(Juth2Error.Types.Auth, "Invalid CORS request"));
                 return;
