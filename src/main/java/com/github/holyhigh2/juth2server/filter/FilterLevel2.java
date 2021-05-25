@@ -150,6 +150,10 @@ public class FilterLevel2 implements Filter {
         Juth2Client client = null;
         try {
             client = juth2Service.getAllClients().get(clientIdClaim.asString());
+            if(client == null){
+                responseWrapper.sendError(HttpStatus.BAD_REQUEST.value(), Juth2Error.getErrorMessage(Juth2Error.Types.Token, "Can't find client with clientId "+clientIdClaim.asString()));
+                return;
+            }
         } catch (Juth2DataAccessException e) {
             Juth2Log.error("getAllClients in level2", e);
             responseWrapper.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value(), Juth2Error.getErrorMessage(Juth2Error.Types.Sys, "Data access error"));

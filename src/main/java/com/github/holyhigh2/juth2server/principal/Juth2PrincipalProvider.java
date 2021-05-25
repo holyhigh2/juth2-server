@@ -1,15 +1,14 @@
 package com.github.holyhigh2.juth2server.principal;
 
-import com.github.holyhigh2.juth2server.Juth2Client;
-import com.github.holyhigh2.juth2server.Juth2DataAccessException;
-import com.github.holyhigh2.juth2server.Juth2Helper;
-import com.github.holyhigh2.juth2server.Juth2Service;
+import com.github.holyhigh2.juth2server.*;
 import com.github.holyhigh2.juth2server.config.Juth2Properties;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.beans.Transient;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Juth2安全主体，标识了当前访问用户的
@@ -100,6 +99,24 @@ public class Juth2PrincipalProvider implements Juth2Principal {
         response.setHeader("Authorization", "Bearer " + tokens[0]);
 
         if(Juth2Properties.SECURITY_COOKIE_ENABLED){
+            String refer = response.getHeader("Access-Control-Allow-Origin");
+
+            String schema = "";
+            Pattern schemaPattern = Pattern.compile("^\\w+:[/]+");
+            Matcher m = schemaPattern.matcher(refer);
+            if(m.find()){
+                schema = m.group();
+            }
+            refer = refer.replace(schema,"");
+            int i = refer.indexOf("/");
+            if(i>-1){
+                refer = refer.substring(0,i);
+            }
+            String[] segments = refer.split("\\.");
+            if(segments.length < 3){
+                Juth2Log.warning("Cannot set cookie on abnormal origin \""+refer+"\"");
+            }
+
             Cookie juth2Auth = new Cookie("Juth2-Auth",tokens[0]);
             juth2Auth.setMaxAge(Juth2Properties.TOKEN_REFRESH_EXPIRE_TIME_IN_SEC);
             juth2Auth.setPath("/");
@@ -137,4 +154,5 @@ public class Juth2PrincipalProvider implements Juth2Principal {
     public String getRefreshToken() {
         return refreshToken;
     }
+
 }

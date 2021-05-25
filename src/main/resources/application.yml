@@ -16,6 +16,6 @@ juth2:
     access-expire-time-in-sec: 1900
     refresh-expire-time-in-sec: 2100
   security:
-    cookieEnabled: false
+    cookieEnabled: true
   allowed:
     methods: head
